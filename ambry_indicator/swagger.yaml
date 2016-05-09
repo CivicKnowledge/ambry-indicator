@@ -1,0 +1,224 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Ambry Indicator
+  description: "Returns indicators from properly classified Ambry bundles. \n"
+tags: 
+    - name: root
+      description: Root level operations
+    - name: measures
+      description: Access measures
+    - name: dimensions
+      description: Access dimensions
+
+schemes:
+  - http
+#host: indicator.civicknowledge.com
+basePath: /indicators/1
+paths:
+  '/{id}':
+    get:
+      tags: [ "root" ]
+      parameters:
+        - name: id
+          in: path
+          description: 'A column reference for a meausre, as a vid, id, vname or name.'
+          type: string
+          required: true
+      description: Return indicator meta data and all indicator data
+      operationId: 'controllers.root.get_measure_root'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: An indicator object
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Indicator'
+  /:
+    get:
+      tags: [ "root" ]
+      description: Return information about the API
+      operationId: "controllers.root.get_root"
+      produces:
+      - application/json
+      
+      responses:
+        200:
+          description: Return information about the API
+  /measures/list:
+    get:
+      tags: [ "measures" ]
+      description: List all of the measures
+      operationId: 'controllers.measures.list_measures'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: An array of measure objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Measure'
+  /measures/find:
+    get:
+      tags: [ "measures" ]
+      description: 'Find measures by name, tag, id or a search query'
+      operationId: 'controllers.measures.find_measure'
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          type: string
+        - name: tag
+          in: query
+          type: string
+        - name: id
+          in: query
+          type: string
+        - name: search
+          in: query
+          type: string
+      responses:
+        '200':
+          description: An array of measure objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Measure'
+  '/measures/{id}':
+    get:
+      tags: [ "measures" ]
+      operationId: 'controllers.measures.get_measure'
+      parameters:
+        - name: id
+          in: path
+          description: 'A column reference for a meausre, as a vid, id, vname or name.'
+          type: string
+          required: true
+      responses:
+        '200':
+          description: A single measure object
+          schema:
+            $ref: '#/definitions/Measure'
+  '/measures/{id}/indicator':
+    get:
+      tags: [ "measures" ]
+      parameters:
+        - name: id
+          in: path
+          description: 'A column reference for a meausre, as a vid, id, vname or name.'
+          type: string
+          required: true
+      description: Return indicator meta data and all indicator data
+      operationId: 'controllers.measures.get_indicator'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: An indicator object
+          schema:
+            $ref: '#/definitions/Indicator'
+    post:
+      tags: [ "measures" ]
+      description: 'Return indicator, with a reduced indicator set'
+      operationId: 'controllers.measures.reduce_indicator'
+      parameters:
+        - name: id
+          in: path
+          description: 'A column reference for a meausre, as a vid, id, vname or name.'
+          type: string
+          required: true
+      responses:
+        200:
+          description: It's all good
+  /dimensions/list:
+      get:
+        tags: [ "dimensions" ]
+        description: List all of the measures
+        operationId: 'controllers.dimensions.list_dimensions'
+        produces:
+          - application/json
+        responses:
+          '200':
+            description: An array of measure objects
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Measure'
+  /dimensions/find:
+      get:
+        tags: [ "dimensions" ]
+        description: 'Find measures by name, tag, id or a search query'
+        operationId: 'controllers.dimensions.find_dimension'
+        produces:
+          - application/json
+        parameters:
+          - name: name
+            in: query
+            type: string
+          - name: tag
+            in: query
+            type: string
+          - name: id
+            in: query
+            type: string
+          - name: search
+            in: query
+            type: string
+        responses:
+          '200':
+            description: An array of measure objects
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Measure'
+  '/dimensions/{id}':
+    get:
+      tags: [ "dimensions" ]
+      operationId: "controllers.dimensions.get_dimension"
+      parameters:
+        - name: id
+          in: path
+          description: 'A column reference for a dimension, as a vid, id, vname or name.'
+          type: string
+          required: true
+      responses:
+        '200':
+          description: A single dimension object
+          schema:
+            $ref: '#/definitions/Dimension'
+
+definitions:
+  data:
+    type: array
+    items:
+      type: array
+      items:
+        type: string
+        
+  Column:
+    type: object
+    discriminator: role
+    required:
+      - vid
+      - role
+    properties:
+      vid:
+        type: string
+      role:
+        type: string
+  Dimension:
+    allOf:
+      - $ref: '#/definitions/Column'
+  Measure:
+    allOf:
+      - $ref: '#/definitions/Column'
+  Indicator:
+    allOf:
+      - $ref: '#/definitions/Column'
+      - properties:
+          data:
+            $ref: '#/definitions/data'

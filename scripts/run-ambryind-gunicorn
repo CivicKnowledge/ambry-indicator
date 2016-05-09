@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Run the AMbry INdicator server with gunicorn, using the default configuration
+
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+usage()
+{
+cat << EOF
+usage: $0 options
+
+Run the ambry indicator server using gunicorn
+
+OPTIONS:
+   -h      Show this message
+   -H      Hostname, defaults to 0.0.0.0, all IP addresses
+   -p      Port, defaults to 80
+   -w      Number of workers, defaults to 4
+
+EOF
+}
+
+HOST=0.0.0.0
+PORT=80
+WORKERS=4
+while getopts "H:p:w:" OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         H)
+             HOST=$OPTARG
+             ;;
+         p)
+             PORT=$OPTARG
+             ;;
+         w)
+             WORKERS=$OPTARG
+             ;;
+
+
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+shift $((OPTIND-1))
+
+exec gunicorn -w $WORKERS --max-requests 10 --timeout 300 -b $HOST:$PORT --access-logfile - --error-logfile - ambry_indicator:app
