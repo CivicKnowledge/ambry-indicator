@@ -4,7 +4,6 @@
 # This software may be modified and distributed under the terms of the BSD license.  
 # See the LICENSE file for details.
 
-from . import jsonify
 
 def find_measure(name = None, tag = None, id = None, search = None):
     return 'do some magic!'
@@ -13,11 +12,11 @@ def find_measure(name = None, tag = None, id = None, search = None):
 def get_indicator(id):
     
   
-    return jsonify({
+    return {
       "role": "Indicator",
       "vid": id,
       "data": [ [j for j in range(10) ] for i in range(10) ]
-    })
+    }
     
 
 def get_measure(id):

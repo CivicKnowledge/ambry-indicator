@@ -4,10 +4,6 @@
 # This software may be modified and distributed under the terms of the BSD license.  
 # See the LICENSE file for details.
 
-import connexion
-from os.path import dirname
-
 if __name__ == '__main__':
-    app = connexion.App(__name__, specification_dir=dirname(__file__))
-    app.add_api('swagger.yaml', arguments={'title': 'Returns indicators from properly classified Ambry bundles. \n'})
-    app.run(port=8082, debug = True)
+    import app
+    app.app.run(port=8082, debug=True)

@@ -26,7 +26,7 @@ paths:
           type: string
           required: true
       description: Return indicator meta data and all indicator data
-      operationId: 'controllers.root.get_measure_root'
+      operationId: 'ambry_indicator.controllers.root.get_measure_root'
       produces:
         - application/json
       responses:
@@ -40,10 +40,9 @@ paths:
     get:
       tags: [ "root" ]
       description: Return information about the API
-      operationId: "controllers.root.get_root"
+      operationId: "ambry_indicator.controllers.root.get_root"
       produces:
       - application/json
-      
       responses:
         200:
           description: Return information about the API
@@ -51,7 +50,7 @@ paths:
     get:
       tags: [ "measures" ]
       description: List all of the measures
-      operationId: 'controllers.measures.list_measures'
+      operationId: 'ambry_indicator.controllers.measures.list_measures'
       produces:
         - application/json
       responses:
@@ -65,7 +64,7 @@ paths:
     get:
       tags: [ "measures" ]
       description: 'Find measures by name, tag, id or a search query'
-      operationId: 'controllers.measures.find_measure'
+      operationId: 'ambry_indicator.controllers.measures.find_measure'
       produces:
         - application/json
       parameters:
@@ -91,7 +90,7 @@ paths:
   '/measures/{id}':
     get:
       tags: [ "measures" ]
-      operationId: 'controllers.measures.get_measure'
+      operationId: 'ambry_indicator.controllers.measures.get_measure'
       parameters:
         - name: id
           in: path
@@ -113,7 +112,7 @@ paths:
           type: string
           required: true
       description: Return indicator meta data and all indicator data
-      operationId: 'controllers.measures.get_indicator'
+      operationId: 'ambry_indicator.controllers.measures.get_indicator'
       produces:
         - application/json
       responses:
@@ -124,7 +123,7 @@ paths:
     post:
       tags: [ "measures" ]
       description: 'Return indicator, with a reduced indicator set'
-      operationId: 'controllers.measures.reduce_indicator'
+      operationId: 'ambry_indicator.controllers.measures.reduce_indicator'
       parameters:
         - name: id
           in: path
@@ -138,7 +137,7 @@ paths:
       get:
         tags: [ "dimensions" ]
         description: List all of the measures
-        operationId: 'controllers.dimensions.list_dimensions'
+        operationId: 'ambry_indicator.controllers.dimensions.list_dimensions'
         produces:
           - application/json
         responses:
@@ -152,7 +151,7 @@ paths:
       get:
         tags: [ "dimensions" ]
         description: 'Find measures by name, tag, id or a search query'
-        operationId: 'controllers.dimensions.find_dimension'
+        operationId: 'ambry_indicator.controllers.dimensions.find_dimension'
         produces:
           - application/json
         parameters:
@@ -178,7 +177,7 @@ paths:
   '/dimensions/{id}':
     get:
       tags: [ "dimensions" ]
-      operationId: "controllers.dimensions.get_dimension"
+      operationId: "ambry_indicator.controllers.dimensions.get_dimension"
       parameters:
         - name: id
           in: path
